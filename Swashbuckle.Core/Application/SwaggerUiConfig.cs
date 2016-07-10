@@ -41,7 +41,7 @@ namespace Swashbuckle.Application
 
             // Use some custom versions to support config and extensionless paths
             var thisAssembly = GetType().Assembly;
-            CustomAsset("index", thisAssembly, "Swashbuckle.SwaggerUi.CustomAssets.index.html");
+            //CustomAsset("index", thisAssembly, "Swashbuckle.SwaggerUi.CustomAssets.index.html");
             CustomAsset("css/screen-css", thisAssembly, "Swashbuckle.SwaggerUi.CustomAssets.screen.css");
             CustomAsset("css/typography-css", thisAssembly, "Swashbuckle.SwaggerUi.CustomAssets.typography.css");
             CustomAsset("lib/swagger-oauth-js", thisAssembly, "Swashbuckle.SwaggerUi.CustomAssets.swagger-oauth.js");
@@ -55,7 +55,7 @@ namespace Swashbuckle.Application
             stringBuilder.AppendLine("<link href='" + path + "' media='" + media + "' rel='stylesheet' type='text/css' />");
             _templateParams["%(StylesheetIncludes)"] = stringBuilder.ToString();
 
-            CustomAsset(path, resourceAssembly, resourceName);
+            CustomAsset(path, resourceAssembly, resourceName, false);
         }
         
         public void BooleanValues(IEnumerable<string> values)
@@ -84,7 +84,7 @@ namespace Swashbuckle.Application
             stringBuilder.Append(path);
             _templateParams["%(CustomScripts)"] = stringBuilder.ToString();
 
-            CustomAsset(path, resourceAssembly, resourceName);
+            CustomAsset(path, resourceAssembly, resourceName, false);
         }
 
         public void DocExpansion(DocExpansion docExpansion)
@@ -92,9 +92,9 @@ namespace Swashbuckle.Application
             _templateParams["%(DocExpansion)"] = docExpansion.ToString().ToLower();
         }
 
-        public void CustomAsset(string path, Assembly resourceAssembly, string resourceName)
+        public void CustomAsset(string path, Assembly resourceAssembly, string resourceName, bool isRazorTemplate = false)
         {
-            _pathToAssetMap[path] = new EmbeddedAssetDescriptor(resourceAssembly, resourceName, path == "index");
+            _pathToAssetMap[path] = new EmbeddedAssetDescriptor(resourceAssembly, resourceName, path == "index", isRazorTemplate);
         }
 
         public void EnableDiscoveryUrlSelector()
